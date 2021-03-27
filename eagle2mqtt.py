@@ -1,6 +1,7 @@
 import os
 import schedule
 import time
+import json
 import eagle200_reader as eagle
 
 from datetime import datetime
@@ -26,6 +27,10 @@ def get_env_config():
     },
     'refresh': os.environ['REFRESH'] #seconds
   }
+
+
+def get_current_datetimestr():
+    return datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
 def job():
@@ -55,11 +60,16 @@ def job():
     mqttRoot = conf['mqtt']['root'].rstrip('/') + '/'
 
   if (instant_demand != None and total_delivered != None):
+    obj = {
+      'timestamp': get_current_datetimestr(),
+      'instant_demand': instant_demand,
+      'total_delivered': total_delivered
+    }
+
     try:
       publish_multiple(
         [
-            {'topic': f'{mqttRoot}instant_demand', 'payload': instant_demand},
-            {'topic': f'{mqttRoot}total_delivered', 'payload': total_delivered}
+            {'topic': f'{mqttRoot}meter_reading', 'payload': json.dumps(obj)}
         ],
         auth={'username': conf['mqtt']['user'], 'password': conf['mqtt']['pass']},
         hostname=conf['mqtt']['host']
