@@ -1,0 +1,3 @@
+schedule
+paho-mqtt
+eagle200_reader

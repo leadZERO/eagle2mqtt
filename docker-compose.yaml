@@ -1,0 +1,14 @@
+version: "3"
+services:
+  eagle2mqtt:
+    image: "${DOCKER_REPO}"
+    restart: "unless-stopped"
+    environment: 
+      - "EAGLE_IP=${EAGLE_IP}"
+      - "EAGLE_CLOUDID=${EAGLE_CLOUDID}"
+      - "EAGLE_INSTALL_CODE=${EAGLE_INSTALL_CODE}"
+      - "MQTT_HOST=${MQTT_HOST}"
+      - "MQTT_USER=${MQTT_USER}"
+      - "MQTT_PASS=${MQTT_PASS}"
+      - "MQTT_ROOT=${MQTT_ROOT}"
+      - "REFRESH=${REFRESH}"
